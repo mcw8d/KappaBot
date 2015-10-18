@@ -1,0 +1,21 @@
+{
+    "name": "KappaBot",
+    "version": "0.1.0",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mcw8d/KappaBot"
+    },
+    "description": "Back end bot implementation for more complex commands not handled by the relays.",
+    "devDependencies": {
+        "typescript": "^1.6.2",
+        "tsd": "^0.6.4"
+    },
+    "dependencies": {
+        "express": "^4.13.3",
+        "cron": "^1.0.9",
+        "lodash": "^3.10.1",
+        "mongodb": "^2.0.45",
+        "q": "^1.4.1"
+    }
+}

@@ -1,0 +1,44 @@
+import groovy.json.JsonSlurper
+
+plugins {
+    id 'com.moowork.node' version '0.10'
+}
+
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '4.1.0'
+    download = true
+}
+
+task clean(type: Delete) {
+    description 'Deletes the build directory from the current project.'
+    delete buildDir
+}
+
+task tsc(type: Exec) {
+    description 'Calls the typescript compiler on every .ts file located in src/main/ts'
+    def standardArgs = [
+        '--module', 'commonjs',
+        '--target', 'ES5',
+        '--outDir', "$buildDir",
+        '--rootDir', "${projectDir}/src/main/ts/"
+    ]
+    Set<File> typescriptFiles = fileTree(dir: 'src/main/ts', include: '**/*.ts').getFiles()
+    enabled = !typescriptFiles.empty
+    executable "${rootDir}/node_modules/.bin/tsc"
+    args (standardArgs + typescriptFiles)
+}
+
+task tsdInstall(type: Exec) {
+    description 'Installs the typedef files listed in tsd.json'
+    commandLine "${rootDir}/node_modules/.bin/tsd install"
+}
+
+task runBot(type: NodeTask) {
+    description 'Runs the KappaBot'
+    script = file("${buildDir}/kappabot.js")
+    execOverrides {
+        it.workingDir = "${buildDir}"
+    }
+}
